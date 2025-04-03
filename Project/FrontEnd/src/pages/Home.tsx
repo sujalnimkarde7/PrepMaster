@@ -14,25 +14,29 @@ const categories = [
     title: 'Aptitude Tests',
     icon: <Brain className="h-6 w-6" />,
     description: 'Sharpen your quantitative and logical reasoning skills',
-    color: 'from-purple-500 to-purple-600'
+    color: 'from-purple-500 to-purple-600',
+    path: '/aptitude-tests'
   },
   {
     title: 'Coding Challenges',
     icon: <Code className="h-6 w-6" />,
     description: 'Practice DSA and solve programming problems',
-    color: 'from-blue-500 to-blue-600'
+    color: 'from-blue-500 to-blue-600',
+    path: '/coding-challenges'
   },
   {
     title: 'Mock Interviews',
     icon: <Users className="h-6 w-6" />,
     description: 'Prepare with realistic interview simulations',
-    color: 'from-green-500 to-green-600'
+    color: 'from-green-500 to-green-600',
+    path: '/mock-interviews'
   },
   {
     title: 'Logical Reasoning',
     icon: <Lightbulb className="h-6 w-6" />,
     description: 'Enhance your problem-solving abilities',
-    color: 'from-orange-500 to-orange-600'
+    color: 'from-orange-500 to-orange-600',
+    path: '/aptitude-tests'
   }
 ];
 
@@ -118,27 +122,28 @@ export default function Home() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {categories.map((category, index) => (
-              <motion.div
-                key={index}
-                className="relative group"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-r rounded-lg transform -rotate-2 opacity-70 group-hover:rotate-0 transition-transform"></div>
-                <div className="relative bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg group-hover:translate-y-1 transition-all">
-                  <div className={`inline-flex p-3 rounded-lg bg-gradient-to-r ${category.color} text-white mb-4`}>
-                    {category.icon}
+              <Link to={category.path} key={index}>
+                <motion.div
+                  className="relative group cursor-pointer"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r rounded-lg transform -rotate-2 opacity-70 group-hover:rotate-0 transition-transform"></div>
+                  <div className="relative bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg group-hover:translate-y-1 transition-all">
+                    <div className={`inline-flex p-3 rounded-lg bg-gradient-to-r ${category.color} text-white mb-4`}>
+                      {category.icon}
+                    </div>
+                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                      {category.title}
+                    </h3>
+                    <p className="text-gray-600 dark:text-gray-300">
+                      {category.description}
+                    </p>
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                    {category.title}
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-300">
-                    {category.description}
-                  </p>
-                </div>
-              </motion.div>
+                </motion.div>
+              </Link>
             ))}
           </div>
         </div>
