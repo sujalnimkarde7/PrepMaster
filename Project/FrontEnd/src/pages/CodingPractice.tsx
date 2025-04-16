@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Code2, Globe } from 'lucide-react';
+import { progressService } from '../services/progressService';
+import ProblemStatusButton from '../components/ProblemStatusButton';
 
 const dsaTopics = [
   {
@@ -148,9 +150,47 @@ const dsaTopics = [
 ];
 
 export default function CodingPractice() {
+  const [solvedProblems, setSolvedProblems] = useState<Set<string>>(new Set());
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchSolvedProblems = async () => {
+      try {
+        const solved = await progressService.getSolvedProblems();
+        setSolvedProblems(new Set(solved.map(problem => problem.problemId)));
+      } catch (error) {
+        console.error('Error fetching solved problems:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSolvedProblems();
+  }, []);
+
   const handlePlatformClick = (url: string) => {
     window.open(url, '_blank');
   };
+
+  const handleStatusChange = (problemId: string, solved: boolean) => {
+    setSolvedProblems(prev => {
+      const newSet = new Set(prev);
+      if (solved) {
+        newSet.add(problemId);
+      } else {
+        newSet.delete(problemId);
+      }
+      return newSet;
+    });
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-gray-600 dark:text-gray-300">Loading...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
@@ -169,7 +209,16 @@ export default function CodingPractice() {
                     className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4"
                   >
                     <div className="flex justify-between items-start mb-2">
-                      <h3 className="text-lg font-medium text-gray-900 dark:text-white">{question.title}</h3>
+                      <div className="flex items-center gap-4">
+                        <ProblemStatusButton
+                          problemId={`${topic.id}-${question.id}`}
+                          problemName={question.title}
+                          difficulty={question.difficulty as 'Easy' | 'Medium' | 'Hard'}
+                          initialStatus={solvedProblems.has(`${topic.id}-${question.id}`)}
+                          onStatusChange={(solved) => handleStatusChange(`${topic.id}-${question.id}`, solved)}
+                        />
+                        <h3 className="text-lg font-medium text-gray-900 dark:text-white">{question.title}</h3>
+                      </div>
                       <span className={`px-3 py-1 rounded-full text-sm ${
                         question.difficulty === "Easy" 
                           ? "bg-green-100 text-green-800" 

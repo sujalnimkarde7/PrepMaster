@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { authAPI } from '../services/api';
+import { toast } from 'react-hot-toast';
 
 interface User {
   id: string;
@@ -37,37 +38,64 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     } catch (error) {
       localStorage.removeItem('token');
+      setUser(null);
     } finally {
       setLoading(false);
     }
   };
 
   const login = async (email: string, password: string) => {
-    const response = await authAPI.login({ email, password });
-    const { token, user } = response.data;
-    localStorage.setItem('token', token);
-    setUser(user);
+    try {
+      const response = await authAPI.login({ email, password });
+      const { token, user } = response.data;
+      localStorage.setItem('token', token);
+      setUser(user);
+      toast.success('Successfully logged in!');
+    } catch (error: any) {
+      const message = error.response?.data?.message || 'Failed to login';
+      toast.error(message);
+      throw error;
+    }
   };
 
   const register = async (username: string, email: string, password: string) => {
-    const response = await authAPI.register({ username, email, password });
-    const { token, user } = response.data;
-    localStorage.setItem('token', token);
-    setUser(user);
+    try {
+      await authAPI.register({ username, email, password });
+      toast.success('Registration successful! Please login to continue.');
+    } catch (error: any) {
+      const message = error.response?.data?.message || 'Failed to register';
+      toast.error(message);
+      throw error;
+    }
   };
 
   const logout = () => {
     localStorage.removeItem('token');
     setUser(null);
+    toast.success('Successfully logged out');
   };
 
   const updateProfile = async (data: { username?: string; email?: string }) => {
-    const response = await authAPI.updateProfile(data);
-    setUser(response.data.user);
+    try {
+      const response = await authAPI.updateProfile(data);
+      setUser(response.data.user);
+      toast.success('Profile updated successfully');
+    } catch (error: any) {
+      const message = error.response?.data?.message || 'Failed to update profile';
+      toast.error(message);
+      throw error;
+    }
   };
 
   const changePassword = async (currentPassword: string, newPassword: string) => {
-    await authAPI.changePassword({ currentPassword, newPassword });
+    try {
+      await authAPI.changePassword({ currentPassword, newPassword });
+      toast.success('Password changed successfully');
+    } catch (error: any) {
+      const message = error.response?.data?.message || 'Failed to change password';
+      toast.error(message);
+      throw error;
+    }
   };
 
   return (
