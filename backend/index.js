@@ -10,21 +10,8 @@ const materialRoutes = require("./routes/materialsRoutes");
 
 const app = express();
 
-// ✅ CORS (Allow only your Vercel frontend)
-app.use(
-  cors({
-    origin: ["https://prepmaster-frontend-sage.vercel.app"],
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
-
-// ✅ Handle preflight safely
-app.use((req, res, next) => {
-  if (req.method === "OPTIONS") return res.sendStatus(204);
-  next();
-});
-
+// ✅ simplest working CORS
+app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
