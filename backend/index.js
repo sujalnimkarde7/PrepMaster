@@ -1,16 +1,19 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-require("dotenv").config();
+require("dotenv").config({ path: "./.env" });
 
 const authRoutes = require("./routes/authRoutes");
-const questionRoutes = require("./routes/questionRoutes"); // ✅ add this
+const questionRoutes = require("./routes/questionRoutes");
 const progressRoutes = require("./routes/progressRoutes");
-const studyMaterialRoutes = require("./routes/studyMaterialRoutes");
+const materialRoutes = require("./routes/materialRoutes");
 
 const app = express();
 
-// Middleware
+/* ✅ CORS Fix (for Vercel Frontend)
+   - Allows requests from any origin
+   - Handles preflight properly
+*/
 app.use(
   cors({
     origin: "*",
@@ -18,23 +21,24 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
+// ✅ Preflight request handler (important)
 app.options("/*", cors());
 
 app.use(express.json());
 
-// Test route
+// ✅ Health check route
 app.get("/", (req, res) => {
   res.send("PrepMaster Backend Running ✅");
 });
 
-// Routes
+// ✅ Routes
 app.use("/api/auth", authRoutes);
-app.use("/api/questions", questionRoutes); // ✅ add this
+app.use("/api/questions", questionRoutes);
 app.use("/api/progress", progressRoutes);
-app.use("/api/materials", studyMaterialRoutes);
+app.use("/api/materials", materialRoutes);
 
-
-// MongoDB connection + Start server
+// ✅ MongoDB connection
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
