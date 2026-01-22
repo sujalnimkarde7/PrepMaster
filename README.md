@@ -45,6 +45,4 @@ This project is built using the **MERN stack** and deployed using **Render + Ver
 - Filter by subject, topic, type (PDF/Video/Notes)
 - Open external material links
 
----
 
-## 🏗️ Project Architecture
