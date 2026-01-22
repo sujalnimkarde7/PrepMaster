@@ -10,35 +10,32 @@ const materialRoutes = require("./routes/materialsRoutes");
 
 const app = express();
 
-/* ✅ CORS Fix (for Vercel Frontend)
-   - Allows requests from any origin
-   - Handles preflight properly
-*/
+// ✅ CORS (Allow only your Vercel frontend)
 app.use(
   cors({
-    origin: "*",
+    origin: ["https://prepmaster-frontend-sage.vercel.app"],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
-// ✅ Preflight request handler (important)
-//app.options("/*", cors());
+// ✅ Handle preflight safely
+app.use((req, res, next) => {
+  if (req.method === "OPTIONS") return res.sendStatus(204);
+  next();
+});
 
 app.use(express.json());
 
-// ✅ Health check route
 app.get("/", (req, res) => {
   res.send("PrepMaster Backend Running ✅");
 });
 
-// ✅ Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/questions", questionRoutes);
 app.use("/api/progress", progressRoutes);
 app.use("/api/materials", materialRoutes);
 
-// ✅ MongoDB connection
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
