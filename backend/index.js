@@ -23,7 +23,7 @@ app.use(
 );
 
 // ✅ Preflight request handler (important)
-app.options("/*", cors());
+//app.options("/*", cors());
 
 app.use(express.json());
 
