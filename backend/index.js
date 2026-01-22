@@ -14,10 +14,12 @@ const app = express();
 app.use(
   cors({
     origin: "*",
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+app.options("*", cors());
+
 app.use(express.json());
 
 // Test route
