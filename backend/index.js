@@ -6,7 +6,7 @@ require("dotenv").config({ path: "./.env" });
 const authRoutes = require("./routes/authRoutes");
 const questionRoutes = require("./routes/questionRoutes");
 const progressRoutes = require("./routes/progressRoutes");
-const materialRoutes = require("./routes/materialRoutes");
+const materialRoutes = require("./routes/materialsRoutes");
 
 const app = express();
 
