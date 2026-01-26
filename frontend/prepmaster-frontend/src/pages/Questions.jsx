@@ -143,21 +143,7 @@ export default function Questions() {
         </div>
 
         {/* Extra Navigation */}
-        <div className="mt-4 flex gap-4 text-sm">
-          <Link
-            to="/progress"
-            className="text-indigo-400 hover:text-indigo-300 font-semibold"
-          >
-            📊 Progress
-          </Link>
-          <Link
-            to="/materials"
-            className="text-indigo-400 hover:text-indigo-300 font-semibold"
-          >
-            📚 Study Materials
-          </Link>
-        </div>
-      </div>
+        
 
       {/* Questions List */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-6">
