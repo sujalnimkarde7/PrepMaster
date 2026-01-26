@@ -42,6 +42,13 @@ const materials = [
     type: "Link",
     link: "https://takeuforward.org/strivers-a2z-dsa-course/strivers-a2z-dsa-course-sheet-2/",
   },
+  {
+    title: "AMCAT Preparation",
+    subject:"AMCAT fix",
+    topic: "Aptitute,DSA,English",
+    type:"Link",
+    link: "https://docs.google.com/spreadsheets/d/1fG_ktfP8dOEDujImt7umNhs2Umm8EVRkPiTkoJueCFc/edit?usp=drivesdk"
+  }
 ];
 
 async function seedMaterials() {
